@@ -1,7 +1,11 @@
 package com.sotkou.quizapp.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.RadioButton
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -52,6 +56,50 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
+        }
+
+        var i = 1
+        binding.apply {
+            next.setOnClickListener(View.OnClickListener{
+                val selectedOption = radioGroup?.checkedRadioButtonId
+                if (selectedOption != -1) {
+                    val radbutton = findViewById<View>(selectedOption!!) as RadioButton
+                    questionsList.let {
+                        if (i < it.size!!) {
+                            // Παιρνουμε τον αριθμο των ερωτησεων
+                            totalQuestions = it.size
+                            // Ελεγχουμε αν η απαντησή είναι σωστή
+                            if (radbutton.text.toString().equals( it[i-1].correct_option)) {
+                                score++
+                                result?.text = "Correct Answer : $score"
+                            }
+                            // εμφανίζουμε τις επόμενες ερωτήσεις
+                            textQuestion.text = "Question ${i+1}: "+questionsList[i].question
+                            radio1.text = it[i].option1
+                            radio2.text = it[i].option2
+                            radio3.text = it[i].option3
+                            radio4.text = it[i].option4
+                            // Ελέγχουμε αν ειναι η τελευταία ερώτηση
+                            if (i == it.size-1) {
+                                next.text = "Finish"
+                            }
+                            radioGroup?.clearCheck()
+                            i++
+                        } else {
+                            if (radbutton.text.toString().equals(it[i-1].correct_option)) {
+                                score++
+                                result?.text = "Correct Answer : $score"
+                            } else {
+                            }
+
+                            val intent = Intent(this@MainActivity, ResultActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                } else {
+                    Toast.makeText(this@MainActivity, "Please select One Oprion", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
     }
 }
