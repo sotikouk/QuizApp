@@ -14,7 +14,8 @@ class QuizRepository {
     var questionsAPI: QuestionsAPI
 
     init {
-        questionsAPI = RetrofitInstance().getRetrofitInstance().create(QuestionsAPI::class.java)
+        questionsAPI = RetrofitInstance().getRetrofitInstance()
+            .create(QuestionsAPI::class.java)
     }
     fun getQuestionsFromAPI(): LiveData<QuestionsList> {
         val data = MutableLiveData<QuestionsList>()
@@ -22,8 +23,9 @@ class QuizRepository {
         GlobalScope.launch(Dispatchers.IO) {
             val response = questionsAPI.getQuestions()
             if (response.isSuccessful) {
+                // σωζουμε τα δεδομενα απο το API σε λιστα και μετα αποθηκευουμε σε LiveData
                 questionsList = response.body()!!
-                data.postValue(questionsList)
+                data.postValue(questionsList) // postValue λογω coroutines!
                 Log.i("TAGY",""+data.value)
             }
         }

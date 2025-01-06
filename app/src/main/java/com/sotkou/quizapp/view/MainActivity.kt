@@ -58,13 +58,13 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        var i = 1
-        binding.apply {
+        var i = 1 // για την δευτερη ερώτηση
+        binding.apply { // για να μην γραφουμε binding συνεχεια
             next.setOnClickListener(View.OnClickListener{
                 val selectedOption = radioGroup?.checkedRadioButtonId
-                if (selectedOption != -1) {
+                if (selectedOption != -1) { // αν η επιλογή δεν είναι κενή
                     val radbutton = findViewById<View>(selectedOption!!) as RadioButton
-                    questionsList.let {
+                    questionsList.let { // τροποποιούμε ολες τις ερωτήσεις (iterate) στο σωστο form
                         if (i < it.size!!) {
                             // Παιρνουμε τον αριθμο των ερωτησεων
                             totalQuestions = it.size
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    Toast.makeText(this@MainActivity, "Please select One Oprion", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Please select One Option", Toast.LENGTH_SHORT).show()
                 }
             })
         }
